@@ -89,6 +89,31 @@ def find_closest(vehicles, ride):
     return best_v
 
 
+def rentability(vehicle, ride, config):
+    if vehicle.rides:
+        v_available_time = v.rides[-1].finish_time
+    else:
+        v_available_time = 0
+
+    time_v_reach_start = v_available_time + distance(vehicle.pos)
+    if time_v_reach_start > ride.latest_start:
+        # can't gain points for the ride
+        return -1
+    else:
+        reward = 0
+        cost = 0
+        if time_v_reach_start <= ride.start_time:
+            # get the bonus
+            reward += config.bonus
+            cost += ride.start_time - v_available_time
+        else:
+            #no bonus
+            cost += distance(vehicle.pos, ride.start)
+        dist_for_client = distance(ride.start, ride.finish) 
+        reward += dist_for_client
+        cost += dist_for_client
+        return reward / cost
+
 def update_state(vehicle, ride):
     vehicle.rides.append(ride)
     dstart = distance(vehicle.pos, ride.start)
