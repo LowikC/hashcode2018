@@ -36,8 +36,8 @@ def score_one(current_pos, current_step, ride, config):
         score += config.bonus
 
     dist_start_end = distance(ride.start, ride.finish)
-    if step_start + dist_start_end >= ride.finish_time:
-        return 0, step_start + dist_start_end, ride.finish
+    if step_start + dist_start_end > ride.finish_time:
+        return 0, current_step + dist_start_end, ride.finish
 
     return score + dist_start_end, step_start + dist_start_end, ride.finish
 
@@ -133,8 +133,9 @@ def solve(config, rides):
 #     print(f"Score: {total_score}")
 
 if __name__ == "__main__":
+    import time
     infilename = sys.argv[1]
-    outfilename = sys.argv[2]
+    outfilename = infilename + str(int(time.time())) + ".out"
 
     instream = open(infilename)
     config, rides = read_input(instream)
@@ -142,7 +143,6 @@ if __name__ == "__main__":
     outstream = open(outfilename, "w")
 
     rides_by_vehicle = solve(config, rides)
-    print(rides_by_vehicle)
     s = score(config, rides, rides_by_vehicle)
     print(f"Score: {s}")
 
