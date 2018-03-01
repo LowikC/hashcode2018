@@ -76,10 +76,11 @@ def find_closest(vehicles, ride):
     min_dist = 1e40
     best_v = None
     for v in vehicles:
-        if v.rides:
-            v_available_time = v.rides[-1].finish_time
-        else:
-            v_available_time = 0
+        v_available_time = v.step
+        # if v.rides:
+        #     v_available_time = v.stepv.rides[-1].finish_time
+        # else:
+        #     v_available_time = 0
 
         d = distance(v.pos, ride.start)
         if v_available_time + d < ride.latest_start:
